@@ -44,14 +44,14 @@ class SavedFeedController extends Controller
     public function savePost(Request $request)
     {
         $user = auth()->user();
-       
+
         $postId = $request->device_id;
-      
+
         $existingSavedPost = SavedFeed::where('user_id', $user->id)->where('profile_id', $postId)->first();
-      
+
         // If the post is already saved, return a response indicating it's already saved
         if ($existingSavedPost) {
-            
+
             return response()->json(['message' => 'Profile is already saved', "success" => false , ]);
         }
         Log::info("User id for save feed" ,[$user->id]);
@@ -61,7 +61,7 @@ class SavedFeedController extends Controller
         $savedPost->user_id = $user->id;
         $savedPost->profile_id = $postId;
         $savedPost->save();
-    
+
         return response()->json(['message' => 'Profile saved successfully', "success" => true]);
     }
 
@@ -74,9 +74,8 @@ class SavedFeedController extends Controller
         $user = auth()->user();
         $savedPosts = SavedFeed::where('user_id', $user->id)->with('feed')->get();
         $arr = [];
-        foreach ($savedPosts as $dev) {
-            $arr[] = Headshots::where('device_id', $dev->profile_id)->where('type_id', 2)->first();
-        }
+        $arr[] = Headshots::where('device_id', $savedPosts[0]->profile_id)->where('type_id', 2)->first();
+
         return response()->json([
             'code' => 200, 'message' => 'Data Fetched',
             'data' => $arr

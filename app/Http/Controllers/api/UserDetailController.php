@@ -258,16 +258,8 @@ class UserDetailController extends Controller
         $savedProfileIds = SavedFeed::where('user_id', $user->id)->pluck('profile_id')->toArray();
 
 
-        // Fetch profile IDs of disabled users of a specific user type
-        $disabledProfiles = User::where('status', 'disabled')
-            ->where('user_type', 'user')
-            ->pluck('profileprogess_id')
-            ->toArray();
-
         // Fetch profiles from profile progress that are not disabled
-        $profiles = ProfileProgress::whereNotIn('id', $disabledProfiles)->where('account_level', 3)
-            ->latest()
-            ->get();
+        $profiles = ProfileProgress::get();
 
         // Fetch additional data for each profile if needed
         $arr = [];

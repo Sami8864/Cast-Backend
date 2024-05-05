@@ -80,6 +80,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/getAchievements',[AchievementController::class,'load']);
 
+Route::post('/uniheadshot', [InitialQuestionnaire::class, 'uploaduniHeadshot']);
 
 // Route::post('/add-advertisement', [AdvertisementController::class, 'upload']);
 // Route::get('/show-advertisement', [AdvertisementController::class, 'show']);
@@ -114,6 +115,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/add-link', [UserDetailController::class, 'addLinks']);
     // Actor profile Api
     Route::post('/headshot', [InitialQuestionnaire::class, 'uploadHeadshot']);
+
     Route::post('/balance', [InitialQuestionnaire::class, 'ensureBalance']); // code in correct
     Route::post('/actorProfile', [UserDetailController::class, 'getProfile']);
     Route::get('/actorMedia', [UserDetailController::class, 'getUserMedia']);
